@@ -10,53 +10,82 @@ public class OlympicRunner extends Thread{
     protected Integer meter = 0;
     Random random = new Random();
 
+    private boolean firstJump = true;
+
 
     public OlympicRunner(String city) {
         this.city = city;
     }
     public void run(){
         while (!gameOver.get()){
-            for (int i = 0; i < random.nextInt(20000)+500; i++) {
-                if (meter == 45000){
-                    gameOver.set(true);
+            int nextJump = random.nextInt(2000);
+            int kodemMeter = this.meter;
 
+
+                try {
+                    sleep(10);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                if (meter >= 45000){
+                    gameOver.set(true);
                     try {
                         sleep(10);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-
+                    this.meter = 45000;
                     System.out.println("the winner is " + this.city + " " + this.meter);
                     gameOver();
                     break;
                 }
 
-                else meter++;
+                if (gameOver.get()){
+                    break;
+                }
+                else
 
-            }
+                meter+= nextJump;
 
-            if (gameOver.get()){
-                break;
-            }
-
-
-            try {
-                sleep(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            System.out.println(this.city + " " + this.meter);
-            boom();
-            meet.set(meter);
+            if (this.meter > 100){
+                boom1(kodemMeter);}
+            if (this.meter > 0){
+            System.out.println(this.city + " " + this.meter);}
         }
-
     }
 
-public void boom(){
-        if (meet.get() == meter & meter > 100){
-            meter = 0;
+
+    public void  boom1(int kodemMeter){
+       // pause.set(true);
+        try {
+            sleep(15);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-}
+        if (mapDistance.containsKey(meter)){
+            if (!firstJump){
+                mapDistance.remove(kodemMeter);
+            }
+
+            // pause.set(false);
+            String kodemCity = mapDistance.get(meter).city;
+            System.out.println(this.city + " and" + "==================== " + kodemCity + " met and reset");
+
+            mapDistance.get(meter).meter = 0;
+            mapDistance.remove(meter);
+            this.meter = 0;
+            mapDistance.put(meter, this);
+
+        }
+        else{
+            if (!firstJump){
+            mapDistance.remove(kodemMeter);}
+            mapDistance.put(meter, this);
+        }
+        firstJump = false;
+    }
+
 
 public void gameOver(){
     if (gameOver.get()){

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicIntegerArray;
@@ -11,8 +12,9 @@ import java.util.concurrent.atomic.AtomicStampedReference;
 
 
 public class Main {
-    public static AtomicInteger meet = new AtomicInteger(0);
     protected static AtomicBoolean gameOver = new AtomicBoolean(false);
+    protected static AtomicBoolean pause = new AtomicBoolean(false);
+    public static ConcurrentHashMap<Integer, OlympicRunner> mapDistance = new ConcurrentHashMap<>();
 
 
     public static void main(String[] args) {
