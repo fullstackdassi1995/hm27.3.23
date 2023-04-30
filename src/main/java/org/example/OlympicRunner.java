@@ -56,34 +56,38 @@ public class OlympicRunner extends Thread{
     }
 
 
-    public void  boom1(int kodemMeter){
-       // pause.set(true);
+    public void  boom1(int kodemMeter) {
+        // pause.set(true);
         try {
             sleep(15);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        if (mapDistance.containsKey(meter)){
-            if (!firstJump){
+
+        synchronized (pause) {
+            if (mapDistance.containsKey(meter)) {
+            if (!firstJump) {
                 mapDistance.remove(kodemMeter);
             }
+                String kodemCity = mapDistance.get(meter).city;
+                System.out.println(this.city + " and" + "==================== " + kodemCity + " met and reset");
 
-            // pause.set(false);
-            String kodemCity = mapDistance.get(meter).city;
-            System.out.println(this.city + " and" + "==================== " + kodemCity + " met and reset");
+                mapDistance.get(meter).meter = 0;
+                mapDistance.remove(meter);
+                this.meter = 0;
+                mapDistance.put(meter, this);
 
-            mapDistance.get(meter).meter = 0;
-            mapDistance.remove(meter);
-            this.meter = 0;
-            mapDistance.put(meter, this);
-
-        }
+            }
         else{
-            if (!firstJump){
-            mapDistance.remove(kodemMeter);}
-            mapDistance.put(meter, this);
+                if (!firstJump) {
+                    mapDistance.remove(kodemMeter);
+                }
+                mapDistance.put(meter, this);
+            }
+            firstJump = false;
+            pause.set(false);
         }
-        firstJump = false;
+
     }
 
 

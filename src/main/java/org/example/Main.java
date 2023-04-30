@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicStampedReference;
 
 public class Main {
     protected static AtomicBoolean gameOver = new AtomicBoolean(false);
-    protected static AtomicBoolean pause = new AtomicBoolean(false);
+    protected static AtomicBoolean pause = new AtomicBoolean(true);
     public static ConcurrentHashMap<Integer, OlympicRunner> mapDistance = new ConcurrentHashMap<>();
 
 
